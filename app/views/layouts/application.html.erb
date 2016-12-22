@@ -9,6 +9,13 @@
   </head>
 
   <body>
-    <%= yield %>
+
+    <div class="container-fulid">
+      <%= render "common/footer" %>
+      <%= yield %>
+    </div>
+
+    <%= render "common/footer" %>
+    
   </body>
 </html>
