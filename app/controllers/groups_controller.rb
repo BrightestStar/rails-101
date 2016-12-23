@@ -19,9 +19,13 @@ class GroupsController < ApplicationController
 
   def create
     @group = Group.new(group_params)
-    @group.save
-    flash[:warning] ="你咋这么牛x呢！"
-    redirect_to groups_path
+
+    if @group.save
+      flash[:warning] ="你咋这么牛x呢！"
+      redirect_to groups_path
+    else
+      render :new
+    end 
   end
 
   def update
