@@ -20,7 +20,7 @@ class GroupsController < ApplicationController
   def create
     @group = Group.new(group_params)
     @group.save
-
+    flash[:warning] ="你咋这么牛x呢！"
     redirect_to groups_path
   end
 
@@ -35,8 +35,8 @@ class GroupsController < ApplicationController
   def destroy
     @group = Group.find(params[:id])
     @group.destroy
-
-    redirect_to groups_path， flash[:alert] = "Group deleted"
+    flash[:alert] = "Group deleted"
+    redirect_to groups_path
   end
 
   private
