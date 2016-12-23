@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
 
-  before_action :authenticate_user! , only: [:new, :create]
+  before_action :authenticate_user! , only: [:new, :create, :edit, :update, :destroy]
 
   def index
     @groups = Group.all
@@ -18,6 +18,10 @@ class GroupsController < ApplicationController
 
   def edit
     @group = Group.find(params[:id])
+
+    if current_user != @group.user
+      redirect_to root_path, alert: "这是谁的地盘你不知道吗？看清楚再进入来."
+    end
   end
 
   def create
@@ -35,16 +39,26 @@ class GroupsController < ApplicationController
   def update
     @group = Group.find(params[:id])
 
-    @group.update(group_params)
+    if current_user != @group.user
+      redirect_to root_path, alert: "这是谁的地盘你不知道吗？看清楚再进入来."
+    end
 
-    redirect_to groups_path, notice: "Update Success"
+    if @group.update(group_params)
+      redirect_to groups_path, notice: "又做了一个牛X的事！也没谁了！"
+    else
+      render :edit
+    end
   end
 
   def destroy
     @group = Group.find(params[:id])
+
+    if current_user != @group.user
+      redirect_to root_path, alert: "这是谁的地盘你不知道吗？看清楚再进入来."
+    end
+
     @group.destroy
-    flash[:alert] = "Group deleted"
-    redirect_to groups_path
+    redirect_to groups_path, alert: "乱扔垃圾可不好！"
   end
 
   private
