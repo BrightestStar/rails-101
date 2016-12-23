@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
-  before_action :authenticate_user! , only: [:new]
-  
+
+  before_action :authenticate_user! , only: [:new, :create]
+
   def index
     @groups = Group.all
   end
@@ -21,6 +22,7 @@ class GroupsController < ApplicationController
 
   def create
     @group = Group.new(group_params)
+    @group.user = current_user
 
     if @group.save
       flash[:warning] ="你咋这么牛x呢！"
