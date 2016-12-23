@@ -1,7 +1,7 @@
 class GroupsController < ApplicationController
 
   before_action :authenticate_user! , only: [:new, :create, :edit, :update, :destroy]
-
+  before_action :find_group_and_check_permission, only: [:edit, :update, :destroy]
   def index
     @groups = Group.all
   end
@@ -17,11 +17,6 @@ class GroupsController < ApplicationController
 
 
   def edit
-    @group = Group.find(params[:id])
-
-    if current_user != @group.user
-      redirect_to root_path, alert: "这是谁的地盘你不知道吗？看清楚再进入来."
-    end
   end
 
   def create
@@ -37,12 +32,6 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group = Group.find(params[:id])
-
-    if current_user != @group.user
-      redirect_to root_path, alert: "这是谁的地盘你不知道吗？看清楚再进入来."
-    end
-
     if @group.update(group_params)
       redirect_to groups_path, notice: "又做了一个牛X的事！也没谁了！"
     else
@@ -51,17 +40,20 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    @group = Group.find(params[:id])
-
-    if current_user != @group.user
-      redirect_to root_path, alert: "这是谁的地盘你不知道吗？看清楚再进入来."
-    end
-
     @group.destroy
     redirect_to groups_path, alert: "乱扔垃圾可不好！"
   end
 
   private
+
+  def find_group_and_check_permission
+
+    @group = Group.find(params[:id])
+
+    if current_user != @group.user
+      redirect_to root_path, alert: "这是谁的地盘你不知道吗？看清楚再进入来."
+    end
+  end
 
   def group_params
     params.require(:group).permit(:title, :description)
