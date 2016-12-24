@@ -25,6 +25,7 @@ class GroupsController < ApplicationController
     @group.user = current_user
 
     if @group.save
+      current_user.join!(@group)
       flash[:warning] ="你咋这么牛x呢！"
       redirect_to groups_path
     else
