@@ -1,13 +1,15 @@
 <div class="col-md-12">
   <div class="group">
-    
+
     <span class="pull-right">
       <% if current_user && current_user.is_member_of?(@group) %>
-        <label class="label label-success"> 群组成员 </label>
+        <label class="label label-success"> 好好干，小兵！ </label>
+        <%= link_to("Quit Group", quit_group_path(@group), method: :post, class: "btn btn-default") %>
       <% else %>
-        <label class="label label-warning"> 不是群组成员 </label>
+        <label class="label label-warning"> 你是间谍吗，小子？ </label>
+        <%= link_to("Join Group", join_group_path(@group), method: :post, class: "btn btn-default") %>
       <% end %>
-    </span>
+   </span>
 
     <%= link_to("Write a Post", new_group_post_path(@group), class: "btn btn-default pull-right")%>
 
