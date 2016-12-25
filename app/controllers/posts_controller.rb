@@ -7,6 +7,9 @@ class PostsController < ApplicationController
     @post = Post.new
   end
 
+  def edit
+  end
+
   def create
     @group = Group.find(params[:group_id])
     @post = Post.new(post_params)
@@ -20,6 +23,13 @@ class PostsController < ApplicationController
     end
   end
 
+  def update
+    if @post.update(post_params)
+      redirect_to posts_path, notice: "又做了一个牛X的事！也没谁了！"
+    else
+      render :edit
+    end
+  end
 
   private
 
